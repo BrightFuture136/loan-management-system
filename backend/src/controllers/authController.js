@@ -78,11 +78,9 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, role: user.role },
+      { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
+      { expiresIn: "1h" }
     );
 
     res.json({
@@ -131,11 +129,9 @@ const verifyEmail = async (req, res) => {
     await db.VerificationKey.destroy({ where: { user_id: user.id } });
 
     const token = jwt.sign(
-      { id: user.id, role: user.role },
+      { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
+      { expiresIn: "1h" }
     );
 
     res.json({
@@ -155,4 +151,31 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-module.exports = { register, login, verifyEmail };
+const verifyToken = async (req, res) => {
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await db.User.findByPk(decoded.id, {
+      attributes: ["id", "name", "email", "role"],
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+module.exports = { register, login, verifyEmail, verifyToken };

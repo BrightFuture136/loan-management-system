@@ -1,4 +1,3 @@
-// AppContent.jsx
 import { Routes, Route } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
@@ -8,14 +7,23 @@ import Register from "./components/Register";
 import LoanApplicationForm from "./components/LoanApplicationForm";
 import LoanApplicationList from "./components/LoanApplicationList";
 import VerifyEmail from "./components/VerifyEmail";
+import LoanList from "./components/LoanList";
+import PaymentForm from "./components/PaymentForm";
+import TransactionList from "./components/TransactionList";
+import AdminDashboard from "./components/AdminDashboard";
+import ManagerDashboard from "./components/ManagerDashboard";
+import CasherDashboard from "./components/CasherDashboard";
 
 function AppContent() {
   const { user, isLoading } = useContext(AuthContext);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen bg-blue-50">
+        flex items-center justify-center
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2">
+          border-b-2 border-blue-500
+        </div>
       </div>
     );
   }
@@ -28,7 +36,13 @@ function AppContent() {
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/apply" element={<LoanApplicationForm />} />
-        <Route path="/loan-applications" element={<LoanApplicationList />} />
+        <Route path="/borrower-dashboard" element={<LoanApplicationList />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/manager-dashboard" element={<ManagerDashboard />} />
+        <Route path="/casher-dashboard" element={<CasherDashboard />} />
+        <Route path="/loans" element={<LoanList />} />
+        <Route path="/loans/:loanId/payments" element={<PaymentForm />} />
+        <Route path="/transactions" element={<TransactionList />} />
         <Route path="/" element={<Login />} />
       </Routes>
     </div>

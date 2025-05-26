@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { AuthContext } from "../context/AuthContext";
 
 const validationSchema = Yup.object({
   loan_amount: Yup.number()
@@ -24,10 +25,14 @@ const validationSchema = Yup.object({
   zone: Yup.string().required("Zone is required"),
   woreda: Yup.string().required("Woreda is required"),
   citizenship: Yup.string().required("Citizenship is required"),
+  income_source: Yup.string().required("Income source is required"),
+  collateral_type: Yup.string().required("Collateral type is required"),
+  identification_type: Yup.string().required("Identification type is required"),
 });
 
 function LoanApplicationForm() {
   const navigate = useNavigate();
+  const { hasRole } = useContext(AuthContext);
   const [serverError, setServerError] = useState("");
 
   const initialValues = {
@@ -39,14 +44,71 @@ function LoanApplicationForm() {
     zone: "",
     woreda: "",
     citizenship: "",
+    income_source: "",
+    collateral_type: "",
+    identification_type: "",
   };
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setServerError("");
     try {
-      await axios.post("/api/loan-applications", values, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const { data: loanApplication } = await axios.post(
+        "/api/loan-applications",
+        {
+          loan_amount: values.loan_amount,
+          loan_purpose: values.loan_purpose,
+          repayment_period_days: values.repayment_period_days,
+          phone_number: values.phone_number,
+          region: values.region,
+          zone: values.zone,
+          woreda: values.woreda,
+          citizenship: values.citizenship,
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+
+      await axios.post(
+        "/api/collateral",
+        {
+          loan_application_id: loanApplication.loanApplication.id,
+          status: "PENDING",
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+
+      const { data: borrowerInfo } = await axios.get(
+        `/api/loan-applications/${loanApplication.loanApplication.id}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+
+      await axios.post(
+        "/api/income-proof",
+        {
+          borrower_personal_info_id: borrowerInfo.borrower_personal_info.id,
+          income_source: values.income_source,
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+
+      await axios.post(
+        "/api/identification",
+        {
+          borrower_personal_info_id: borrowerInfo.borrower_personal_info.id,
+          document_type: values.identification_type,
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+
       resetForm();
       navigate("/loan-applications");
     } catch (err) {
@@ -216,9 +278,76 @@ function LoanApplicationForm() {
               />
             </div>
 
+            <div className="border-b border-gray-200 pb-4 mb-4 mt-6">
+              <h3 className="text-lg font-semibold text-gray-700">
+                Additional Documents
+              </h3>
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Income Source
+              </label>
+              <Field
+                type="text"
+                name="income_source"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g., Salary"
+              />
+              <ErrorMessage
+                name="income_source"
+                component="p"
+                className="text-red-500 text-sm mt-1"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Collateral Type
+              </label>
+              <Field
+                as="select"
+                name="collateral_type"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select collateral type</option>
+                <option value="LAND_TITLE_CERTIFICATE">
+                  Land Title Certificate
+                </option>
+                <option value="CAR_OWNERSHIP_DOCUMENT">
+                  Car Ownership Document
+                </option>
+              </Field>
+              <ErrorMessage
+                name="collateral_type"
+                component="p"
+                className="text-red-500 text-sm mt-1"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Identification Type
+              </label>
+              <Field
+                as="select"
+                name="identification_type"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select identification type</option>
+                <option value="NATIONAL_ID">National ID</option>
+                <option value="KEBELE_ID">Kebele ID</option>
+                <option value="PASSPORT">Passport</option>
+              </Field>
+              <ErrorMessage
+                name="identification_type"
+                component="p"
+                className="text-red-500 text-sm mt-1"
+              />
+            </div>
+
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={
+                isSubmitting || !hasRole(["BORROWER", "ADMIN", "MANAGER"])
+              }
               className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50"
             >
               {isSubmitting ? "Submitting..." : "Submit Application"}
