@@ -36,7 +36,7 @@ function AppContent() {
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/apply" element={<LoanApplicationForm />} />
-        <Route path="/borrower-dashboard" element={<LoanList />} />
+        <Route path="/borrower-dashboard" element={<LoanApplicationList />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/manager-dashboard" element={<ManagerDashboard />} />
         <Route path="/casher-dashboard" element={<CasherDashboard />} />

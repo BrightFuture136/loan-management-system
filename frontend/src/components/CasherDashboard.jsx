@@ -48,7 +48,7 @@ function CasherDashboard() {
 
     const fetchApplications = async () => {
       try {
-        const response = await axios.get("/api/loan-applications", {
+        const response = await axios.get("/api/loans", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setLoanApplications(
