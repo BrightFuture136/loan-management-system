@@ -97,7 +97,7 @@ function AdminDashboard() {
               >
                 <option value="">Select role</option>
                 <option value="MANAGER">Manager</option>
-                <option value="CASHER">Cashier</option>
+                <option value="CASHER">Casheer</option>
                 <option value="BORROWER">Borrower</option>
               </Field>
               <ErrorMessage

@@ -129,8 +129,8 @@ function CasherDashboard() {
   if (isLoading) {
     return (
       <div className="container mx-auto p-6">
-        <div class="flex justify-center items-center h-64">
-          <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       </div>
     );
@@ -142,73 +142,75 @@ function CasherDashboard() {
         Casher Dashboard
       </h2>
       {error && (
-        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
-          <p class="text-sm text-red-700">{error}</p>
+        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
+          <p className="text-sm text-red-700">{error}</p>
         </div>
       )}
       {success && (
-        <div class="bg-green-100 border-l-4 border-green-500 p-4 mb-6 rounded">
-          <p class="text-sm text-green-700">{success}</p>
+        <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6 rounded">
+          <p className="text-sm text-green-700">{success}</p>
         </div>
       )}
-      <section class="mb-12">
-        <h3 class="text-sm font-semibold text-gray-700 mb-4">Verify Payment</h3>
+      <section className="mb-12">
+        <h3 className="text-sm font-semibold text-gray-700 mb-4">
+          Verify Payment
+        </h3>
         <Formik
           initialValues={{ borrowerId: "", loanId: "", amount: "" }}
           validationSchema={paymentValidationSchema}
           onSubmit={handlePaymentVerification}
         >
           {({ isSubmitting }) => (
-            <Form class="bg-white p-6 rounded-lg shadow-sm space-y-4">
+            <Form className="bg-white p-6 rounded-lg shadow-sm space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700">
                   Borrower ID
                 </label>
                 <Field
                   type="number"
                   name="borrowerId"
-                  class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <ErrorMessage
                   name="borrowerId"
                   component="p"
-                  class="text-red-500 text-sm mt-1"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700">
                   Loan ID
                 </label>
                 <Field
                   type="number"
                   name="loanId"
-                  class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <ErrorMessage
                   name="loanId"
                   component="p"
-                  class="text-red-500 text-sm mt-1"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700">
                   Amount (ETB)
                 </label>
                 <Field
                   type="number"
                   name="amount"
-                  class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <ErrorMessage
                   name="amount"
                   component="p"
-                  class="text-red-500 text-sm mt-1"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50"
               >
                 {isSubmitting ? "Verifying..." : "Verify Payment"}
               </button>
@@ -216,25 +218,27 @@ function CasherDashboard() {
           )}
         </Formik>
       </section>
-      <section class="mb-12">
-        <h3 class="text-xl font-semibold text-gray-700 mb-4">
+      <section className="mb-12">
+        <h3 className="text-xl font-semibold text-gray-700 mb-4">
           Verify Documents
         </h3>
         {loanApplications.length === 0 ? (
-          <div class="bg-white rounded-xl p-6 text-gray-500">
+          <div className="bg-white rounded-xl p-6 text-gray-500">
             No pending documents
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {loanApplications.map((app) => (
-              <div key={app.id} class="bg-white rounded-xl p-6">
-                <h4 class="text-lg font-semibold text-gray-700">
+              <div key={app.id} className="bg-white rounded-xl p-6">
+                <h4 className="text-lg font-semibold text-gray-700">
                   Loan Application #{app.id}
                 </h4>
-                <p class="text-sm text-gray-600">Borrower ID: {app.user_id}</p>
+                <p className="text-sm text-gray-600">
+                  Borrower ID: {app.user_id}
+                </p>
                 {app.collaterals.map((collateral) => (
-                  <div key={collateral.id} class="mt-2">
-                    <p class="text-sm text-gray-600">
+                  <div key={collateral.id} className="mt-2">
+                    <p className="text-sm text-gray-600">
                       Collateral ID: {collateral.id} - {collateral.status}
                     </p>
                     <Formik
@@ -247,11 +251,11 @@ function CasherDashboard() {
                       onSubmit={handleDocumentVerification}
                     >
                       {({ isSubmitting }) => (
-                        <Form class="mt-2 space-y-2">
+                        <Form className="mt-2 space-y-2">
                           <Field
                             as="select"
                             name="status"
-                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             <option value="">Select status</option>
                             <option value="VERIFIED">Approve</option>
@@ -260,14 +264,14 @@ function CasherDashboard() {
                           <ErrorMessage
                             name="status"
                             component="p"
-                            class="text-red-500 text-sm mt-1"
+                            className="text-red-500 text-sm mt-1"
                           />
                           <button
                             type="submit"
                             disabled={
                               isSubmitting || collateral.status !== "PENDING"
                             }
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:opacity-50"
+                            className="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:opacity-50"
                           >
                             {isSubmitting ? "Verifying..." : "Verify"}
                           </button>
@@ -277,8 +281,8 @@ function CasherDashboard() {
                   </div>
                 ))}
                 {app.borrowerPersonalInfo?.incomeProofs?.map((proof) => (
-                  <div key={proof.id} class="mt-2">
-                    <p class="text-sm text-gray-600">
+                  <div key={proof.id} className="mt-2">
+                    <p className="text-sm text-gray-600">
                       Income Proof ID: {proof.id} - {proof.status}
                     </p>
                     <Formik
@@ -291,11 +295,11 @@ function CasherDashboard() {
                       onSubmit={handleDocumentVerification}
                     >
                       {({ isSubmitting }) => (
-                        <Form class="mt-2 space-y-2">
+                        <Form className="mt-2 space-y-2">
                           <Field
                             as="select"
                             name="status"
-                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           >
                             <option value="">Select status</option>
                             <option value="VERIFIED">Approve</option>
@@ -304,14 +308,14 @@ function CasherDashboard() {
                           <ErrorMessage
                             name="status"
                             component="p"
-                            class="text-red-500 text-sm mt-1"
+                            className="text-red-500 text-sm mt-1"
                           />
                           <button
                             type="submit"
                             disabled={
                               isSubmitting || proof.status !== "PENDING"
                             }
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:bg-gray-500"
+                            className="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:bg-gray-500"
                           >
                             {isSubmitting ? "Verifying..." : "Verify"}
                           </button>
