@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 const loanApplicationRoutes = require("./routes/loanApplicationRoutes");
-const loanRoutes = require("./routes/loanRoutes");
+// const loanRoutes = require("./routes/loanRoutes");
 const loanProductRoutes = require("./routes/loanProductRoutes");
 const casherRoutes = require("./routes/casherRoutes");
 const adminRoutes = require("./routes/adminRoutes");
@@ -24,8 +24,8 @@ app.use(
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/loan-applications", loanApplicationRoutes);
-app.use("/api/loans", loanRoutes);
+app.use("/api/loans", loanApplicationRoutes);
+// app.use("/api/loans", loanRoutes);
 app.use("/api/loan-products", loanProductRoutes);
 app.use("/api/casher", casherRoutes);
 app.use("/api/admin", adminRoutes);

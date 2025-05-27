@@ -71,9 +71,9 @@ function Navbar() {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d={
                 isOpen ? "M6 18L18 6 6M6 6l12 12" : "M4 6h24l12m4 12h24M4 18l12"
               }

@@ -156,7 +156,7 @@ function CasherDashboard() {
         <Formik
           initialValues={{ borrowerId: "", loanId: "", amount: "" }}
           validationSchema={paymentValidationSchema}
-          onSubmit={paymentVerificationForm}
+          onSubmit={handlePaymentVerification}
         >
           {({ isSubmitting }) => (
             <Form class="bg-white p-6 rounded-lg shadow-sm space-y-4">

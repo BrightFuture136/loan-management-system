@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "./context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import LoanProductForm from "./LoanProductForm";
 
 function ManagerDashboard() {
@@ -39,9 +39,9 @@ function ManagerDashboard() {
               },
             }),
           ]);
-        setLoanApplications(responseApplications.data);
-        setLoanProducts(responseProducts.data);
-        setNotifications(responseNotifications.data);
+        setLoanApplications(applicationsResponse.data);
+        setLoanProducts(productsResponse.data);
+        setNotifications(notificationsResponse.data);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch data");
       } finally {
@@ -63,7 +63,7 @@ function ManagerDashboard() {
         ...prev,
         [userId]: response.data,
       }));
-    } catch (err) {
+    } catch {
       setError("Failed to fetch payment history");
     }
   };

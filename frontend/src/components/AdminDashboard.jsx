@@ -56,7 +56,7 @@ function AdminDashboard() {
     <div className="container mx-auto p-6 max-w-2xl">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h2>
       {serverError && (
-        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
+        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
           <p className="text-sm text-red-700">{serverError}</p>
         </div>
       )}
@@ -87,11 +87,13 @@ function AdminDashboard() {
               />
             </div>
             <div>
-              <label class="block text-gray-700 font-medium mb-1">Role</label>
+              <label className="block text-gray-700 font-medium mb-1">
+                Role
+              </label>
               <Field
                 as="select"
                 name="role"
-                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select role</option>
                 <option value="MANAGER">Manager</option>
@@ -101,13 +103,13 @@ function AdminDashboard() {
               <ErrorMessage
                 name="role"
                 component="p"
-                class="text-red-500 text-sm mt-1"
+                className="text-red-500 text-sm mt-1"
               />
             </div>
             <button
               type="submit"
               disabled={isSubmitting}
-              class="w-full bg-blue-500 text-white-3 p-0 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50"
+              className="w-full bg-blue-500 text-white-3 p-0 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50"
             >
               {isSubmitting ? "Changing Role..." : "Change Role"}
             </button>

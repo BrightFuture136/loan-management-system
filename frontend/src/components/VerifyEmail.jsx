@@ -30,7 +30,7 @@ function VerifyEmail() {
         throw new Error("Email is required for verification");
       }
 
-      const res = await axios.post("/api/auth/verify", {
+      const res = await axios.post("/api/auth/verify-email", {
         email,
         code: values.code,
       });

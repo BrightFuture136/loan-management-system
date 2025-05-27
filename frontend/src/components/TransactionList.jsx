@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 
 function TransactionList() {
-  const { hasRole } = useContext(AuthContext);
+  useContext(AuthContext);
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
