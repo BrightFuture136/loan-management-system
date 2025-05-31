@@ -45,7 +45,11 @@ const getLoanApplications = async (req, res) => {
 
   try {
     let applications;
-    if (userRole === "ADMIN" || userRole === "MANAGER") {
+    if (
+      userRole === "ADMIN" ||
+      userRole === "MANAGER" ||
+      userRole === "BORROWER"
+    ) {
       applications = await db.LoanApplication.findAll({
         include: [{ model: db.BorrowerPersonalInfo }],
       });
@@ -57,8 +61,10 @@ const getLoanApplications = async (req, res) => {
     }
 
     res.json(applications);
+    console.log("Loan applications retrieved successfully" + applications);
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.error("Error retrieving loan applications: " + error.message);
   }
 };
 

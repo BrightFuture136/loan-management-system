@@ -8,6 +8,10 @@ router.post(
   authMiddleware,
   loanApplicationController.createLoanApplication
 );
-router.get("/", authMiddleware, loanApplicationController.getLoanApplications);
+router.get(
+  "/",
+  authMiddleware(["ADMIN", "MANAGER", "BORROWER"]),
+  loanApplicationController.getLoanApplications
+);
 
 module.exports = router;

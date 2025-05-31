@@ -83,15 +83,18 @@ const login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.json({
-      token,
+    const response = {
+      token: token,
       user: {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.role,
+        role: user.role, // Ensure this matches Prisma enum exactly
       },
-    });
+    };
+
+    console.log("Sending login response:", response); // Debug log
+    res.json(response);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

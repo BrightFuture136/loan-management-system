@@ -34,40 +34,55 @@ const AuthProvider = ({ children }) => {
   }, [navigate]);
 
   const login = (responseData) => {
+    console.log(
+      "[1] Raw login response:",
+      JSON.stringify(responseData, null, 2)
+    );
+
+    // Validate response structure
     if (!responseData?.user?.role) {
-      console.error("Role is missing in response:", responseData);
+      console.error("[2] Invalid response - missing role:", responseData);
       return;
     }
 
-    // Normalize the role to uppercase to match Prisma enum
-    const normalizedRole = responseData.user.role.toUpperCase();
+    // Force role to uppercase and trim
+    const role = responseData.user.role.toString().toUpperCase().trim();
+    console.log("[3] Normalized role:", role);
+
+    // Create user data object
     const userData = {
       ...responseData.user,
-      role: normalizedRole,
+      role: role,
       token: responseData.token,
     };
 
+    // Store user data
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", userData.token);
 
-    console.log("User role after normalization:", normalizedRole); // Debug log
+    // Debug: Verify localStorage
+    console.log("[4] Stored user:", localStorage.getItem("user"));
+    console.log("[5] Stored token:", localStorage.getItem("token"));
 
-    const dashboardMap = {
+    // Dashboard mapping with exact Prisma enum values
+    const DASHBOARD_MAP = {
       ADMIN: "/admin-dashboard",
       BORROWER: "/borrower-dashboard",
       MANAGER: "/manager-dashboard",
-      CASHER: "/casher-dashboard", // Note: Must match exactly with your Prisma enum
+      CASHER: "/casher-dashboard",
     };
 
-    const dashboard = dashboardMap[normalizedRole];
-    if (!dashboard) {
-      console.error("No dashboard mapped for role:", normalizedRole);
+    const targetRoute = DASHBOARD_MAP[role];
+    console.log("[6] Determined route:", targetRoute);
+
+    if (!targetRoute) {
+      console.error("[7] No route mapped for role:", role);
       return navigate("/login");
     }
 
-    console.log("Navigating to:", dashboard); // Debug log
-    navigate(dashboard);
+    console.log("[8] Attempting navigation to:", targetRoute);
+    navigate(targetRoute, { replace: true }); // Force navigation
   };
 
   const logout = () => {

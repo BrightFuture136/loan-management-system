@@ -26,12 +26,40 @@ function Login() {
   const handleSubmit = async (values, { setSubmitting }) => {
     setServerError("");
     try {
+      console.log("[A] Starting login attempt...");
       const response = await axios.post(
         "http://localhost:5000/api/auth/login",
-        values
+        values,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      login(response.data); // Pass the entire response data
+
+      console.log("[B] Raw server response:", response);
+      console.log("[C] Response data:", response.data);
+
+      if (!response.data?.user) {
+        throw new Error("Invalid server response structure");
+      }
+
+      // Explicitly structure the data we pass to login
+      const loginData = {
+        token: response.data.token,
+        user: {
+          id: response.data.user.id,
+          name: response.data.user.name,
+          email: response.data.user.email,
+          role: response.data.user.role,
+        },
+      };
+
+      console.log("[D] Processed login data:", loginData);
+      login(loginData);
     } catch (err) {
+      console.error("[E] Login error:", err);
+      console.error("[F] Error details:", err.response?.data);
       setServerError(err.response?.data?.message || "Login failed");
     } finally {
       setSubmitting(false);

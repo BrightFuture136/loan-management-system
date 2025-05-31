@@ -12,7 +12,7 @@ function LoanList() {
   useEffect(() => {
     const fetchLoans = async () => {
       try {
-        const response = await axios.get("/api/loans", {
+        const response = await axios.get("/api/loan-applications", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setLoans(response.data);

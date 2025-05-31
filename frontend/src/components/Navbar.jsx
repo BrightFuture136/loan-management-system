@@ -12,15 +12,13 @@ function Navbar() {
     setIsOpen(false);
     navigate("/login");
   };
-
-  if (!user) return null;
-
   const dashboardLink = {
     ADMIN: "/admin-dashboard",
     MANAGER: "/manager-dashboard",
     CASHER: "/casher-dashboard",
     BORROWER: "/borrower-dashboard",
   }[user.role];
+  if (!user) return null;
 
   return (
     <nav className="bg-emerald-600 text-white shadow-lg sticky top-0 z-50">
@@ -28,19 +26,38 @@ function Navbar() {
         <Link to={dashboardLink} className="text-2xl font-bold tracking-tight">
           DEBO Microfinance
         </Link>
+
         <div className="hidden md:flex items-center space-x-6">
-          <Link
-            to={dashboardLink}
-            className="text-sm font-medium hover:text-emerald-100 transition-colors"
-          >
-            Dashboard
-          </Link>
+          {hasRole(["BORROWER", "ADMIN", "MANAGER", "CASHER"]) && (
+            <Link
+              to={dashboardLink}
+              className="text-sm font-medium hover:text-emerald-100 transition-colors"
+            >
+              Dashboard
+            </Link>
+          )}
           {hasRole(["BORROWER", "ADMIN", "MANAGER"]) && (
+            <Link
+              to="/application"
+              className="text-sm font-medium hover:text-emerald-100 transition-colors"
+            >
+              Applications
+            </Link>
+          )}
+          {hasRole(["BORROWER"]) && (
             <Link
               to="/apply"
               className="text-sm font-medium hover:text-emerald-100 transition-colors"
             >
               Apply for Loan
+            </Link>
+          )}
+          {hasRole(["ADMIN", "MANAGER", "BORROWER"]) && (
+            <Link
+              to="/loans"
+              className="text-sm font-medium hover:text-emerald-100 transition-colors"
+            >
+              Loans
             </Link>
           )}
           {hasRole(["ADMIN", "MANAGER", "CASHER"]) && (
@@ -49,6 +66,14 @@ function Navbar() {
               className="text-sm font-medium hover:text-emerald-100 transition-colors"
             >
               Transactions
+            </Link>
+          )}
+          {hasRole(["ADMIN"]) && (
+            <Link
+              to="/reports"
+              className="text-sm font-medium hover:text-emerald-100 transition-colors"
+            >
+              Reports
             </Link>
           )}
           <button
@@ -73,24 +98,24 @@ function Navbar() {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth="2"
-              d={
-                isOpen ? "M6 18L18 6 6M6 6l12 12" : "M4 6h24l12m4 12h24M4 18l12"
-              }
+              strokeWidth={2}
+              d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
             />
           </svg>
         </button>
       </div>
       {isOpen && (
         <div className="md:hidden bg-emerald-700 px-4 py-2">
-          <Link
-            to={dashboardLink}
-            className="block py-2 text-sm font-medium hover:text-emerald-100 transition-colors"
-            onClick={() => setIsOpen(false)}
-          >
-            Dashboard
-          </Link>
           {hasRole(["BORROWER", "ADMIN", "MANAGER"]) && (
+            <Link
+              to="/application"
+              className="block py-2 text-sm font-medium hover:text-emerald-100 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Applications
+            </Link>
+          )}
+          {hasRole(["BORROWER"]) && (
             <Link
               to="/apply"
               className="block py-2 text-sm font-medium hover:text-emerald-100 transition-colors"
@@ -99,19 +124,37 @@ function Navbar() {
               Apply for Loan
             </Link>
           )}
+          {hasRole(["ADMIN", "MANAGER", "BORROWER"]) && (
+            <Link
+              to="/loans"
+              className="block py-2 text-sm font-medium hover:text-emerald-100 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Loans
+            </Link>
+          )}
           {hasRole(["ADMIN", "MANAGER", "CASHER"]) && (
             <Link
               to="/transactions"
-              className="block py-2 text-sm font-medium hover:text-emerald-100"
-              transition-colors
+              className="block py-2 text-sm font-medium hover:text-emerald-100 transition-colors"
               onClick={() => setIsOpen(false)}
             >
               Transactions
             </Link>
           )}
+          {hasRole(["ADMIN"]) && (
+            <Link
+              to="/da"
+              className="block py-2 text-sm font-medium hover:text-emerald-100 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Reports
+            </Link>
+          )}
+
           <button
             onClick={handleLogout}
-            className="block w-full text-left py-2 text-sm font-medium text-rose-100 hover:bg-text-rose-200 transition-colors"
+            className="block w-full text-left py-2 text-sm font-medium text-rose-100 hover:text-rose-200 transition-colors"
           >
             Logout
           </button>

@@ -13,10 +13,18 @@ import TransactionList from "./components/TransactionList";
 import AdminDashboard from "./components/AdminDashboard";
 import ManagerDashboard from "./components/ManagerDashboard";
 import CasherDashboard from "./components/CasherDashboard";
-
+import { useEffect } from "react";
+import Applications from "./components/Applications";
 function AppContent() {
   const { user, isLoading } = useContext(AuthContext);
+  useEffect(() => {
+    console.log("[X] Current user:", user);
+    console.log("[Y] Current path:", window.location.pathname);
 
+    if (user?.role) {
+      console.log("[Z] User role detected:", user.role);
+    }
+  }, [user]);
   if (isLoading) {
     return (
       <div className="min-h-screen bg-blue-50">
@@ -43,6 +51,7 @@ function AppContent() {
         <Route path="/loans" element={<LoanList />} />
         <Route path="/loans/:loanId/payments" element={<PaymentForm />} />
         <Route path="/transactions" element={<TransactionList />} />
+        <Route path="/application" element={<Applications />} />
         <Route path="/" element={<Login />} />
       </Routes>
     </div>

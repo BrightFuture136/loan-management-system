@@ -2,6 +2,7 @@
     const LoanApplication = sequelize.define(
       "LoanApplication",
       {
+        
         id: {
           type: Sequelize.INTEGER,
           autoIncrement: true,
